@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Amazone | Home</title>
+    <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+    <h1>Hey 
+        <span data-th-text="${username}" class="uppercase"></span>! 
+        <span>
+            <img src="/images/jeff_bezos_laughing.jpg" height="100" width="100">
+        </span>
+    </h1>
+
+    <code class="promotion">
+        >>> Stay tune for <b>Amazone Black Friday Sale</b> - 21 November to 2 December!
+    </code>
+
+    <hr>
+
+    <form method="POST" action="/newcart">
+        <button type="submit">Add new cart</button>
+    </form>
+
+    <br>
+
+    <div data-th-if="${#lists.isEmpty(carts)}">
+        <code>You have not created any carts yet!</code>
+    </div>
+
+    <div data-th-unless="${#lists.isEmpty(carts)}">
+        <table border="1" class="table">
+            <tr>
+                <th>
+                    Cart
+                </th>
+                <th>
+                    Number of Items
+                </th>
+                <th>
+                    Action(s)
+                </th>
+            </tr>
+    
+            <tr data-th-each="cart : ${carts}">
+                <td>
+                    <a data-th-href="@{/cart/{cartId}(cartId=${cart.id})}" data-th-text="${cart.id}"></a>
+                </td>
+                <td>
+                    <span data-th-text="${cart.numberOfItems}"></span>
+                </td>
+                <td class="action">
+                    <form method="GET" data-th-action="@{/cart/{cartId}(cartId=${cart.id})}">
+                        <button type="submit" class="view">
+                            View
+                        </button>
+                    </form>
+
+                    <span>/</span>
+                    <form method="POST" action="/deletecart">
+                        <input type="hidden" name="cartId" data-th-value="${cart.id}">
+                        <button type="submit" class="delete">
+                            Delete
+                        </button>
+                    </form>
+                </td>
+            </tr>
+        </table>
+    </div>
+
+    <hr>
+
+    <form method="POST" action="/logout">
+        <p>Got everything you need? 
+            <button type="submit">Logout</button> 
+        </p>
+    </form>
+    
+</body>
+</html>

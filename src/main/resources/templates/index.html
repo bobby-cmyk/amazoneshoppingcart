@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Amazone | Login</title>
+    <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+    <h1>Welcome to Amazone! <img src="/images/jeff_bezos.jpg" height="100" width="100"></h1> 
+
+    <hr>
+
+    <form method="POST" action="/auth" data-th-object="${loginForm}">
+        <table>
+            <tr>
+                <td>
+                    Username:
+                </td>
+                <td>
+                    <input type="text" data-th-field="*{username}" autocomplete="off">
+                </td>
+                <td>
+                    <span data-th-if="${#fields.hasErrors('username')}"
+                        data-th-errors="*{username}"
+                        data-th-errorclass="error"
+                    ></span>
+                </td>
+            </tr>
+
+            <tr>
+                <td></td>
+
+                <td data-th-text="${currentCaptcha}" class="currentCaptcha"></td>
+            </tr>
+
+            <tr>
+                <td>
+                    Captcha:
+                </td>
+                <td>
+                    <input type="text" data-th-field="*{captcha}" autocomplete="off">
+                </td>
+                <td>
+                    <span data-th-if="${#fields.hasErrors('captcha')}"
+                        data-th-errors="*{captcha}"
+                        data-th-errorclass="error"
+                    ></span>
+                </td>
+            </tr>
+
+            <tr>
+                <td></td>
+
+                <td><button type="submit">Login</button></td>
+            </tr>
+        </table>
+
+        <div data-th-if="${#fields.hasErrors('global')}" data-th-each="err: ${#fields.errors('global')}" class="error">
+            <p data-th-text="${err}"></p>
+        </div>
+    </form>
+</body>
+</html>

@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Amazone | Cart</title>
+    <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body data-th-object="${cart}">
+
+    <h1>Cart 
+        <code data-th-text="*{id}"></code>
+    </h1>
+
+    <hr>
+
+    <form method="POST" action="/additem" data-th-object="${item}">
+        <table>
+            <input type="hidden" name="cartId" data-th-value="${cart.id}">
+            <tr>
+                <td>
+                    Name:
+                </td>
+                <td>
+                    <input type="text" data-th-field="*{name}" autocomplete="off">
+                </td>
+                <td>
+                    <span data-th-if="${#fields.hasErrors('name')}"
+                        data-th-errors="*{name}"
+                        data-th-errorclass="error"
+                    ></span>
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    Qty:
+                </td>
+                <td>
+                    <input type="number" data-th-field="*{quantity}" autocomplete="off">
+                </td>
+                <td>
+                    <span data-th-if="${#fields.hasErrors('quantity')}"
+                        data-th-errors="*{quantity}"
+                        data-th-errorclass="error"
+                    ></span>
+                </td>
+            </tr>
+
+            <tr>
+                <td></td>
+                <td>
+                    <button type="submit">
+                        Add Item
+                    </button>
+                </td>    
+            </tr>
+        </table>
+    </form>
+
+    <hr>
+
+    <div data-th-if="${#lists.isEmpty(cart.items)}">
+        <code>You have not added any items yet!</code>
+    </div>
+
+    <div data-th-unless="${#lists.isEmpty(cart.items)}">
+        <table border="1" class="table">
+            <tr>
+                <th>
+                    Item
+                </th>
+                <th>
+                    Quantity
+                </th>
+                <th>
+                    Action(s)
+                </th>
+            </tr>
+    
+            <tr data-th-each="item : ${cart.items}">
+                <td>
+                    <span data-th-text="${item.name}"></span>
+                </td>
+                <td>
+                    <span data-th-text="${item.quantity}"></span>
+                </td>
+                <td>
+                    <form method="POST" action="/deleteitem">
+                        <input type="hidden" name="itemName" data-th-value="${item.name}">
+                        <input type="hidden" name="cartId" data-th-value="${cart.id}">
+                        <button type="submit" class="delete">
+                            Delete
+                        </button>
+                    </form>
+                </td>
+            </tr>
+        </table>
+    </div>
+
+    <hr>
+
+    <form method="GET" data-th-action="@{/home/{username}(username=*{username})}">
+        <p>
+            Go back to 
+            <span class="uppercase" data-th-text="*{username}"></span> 
+            page?
+        <button type="submit">Save</button>
+        </p>
+    </form>
+</body>
+</html>
